@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎</title>
+</head>
+<body>
+<input type="text" id="123">
+<button id='x_set'>提交</button>
+<div id="12"></div>
+<script src="/static/js/jquery-1.11.3.js"></script>
+<script>
+    $(function () {
+        $('#x_set').click(
+            function () {
+                if (window.XMLHttpRequest) {
+                    var xhr = new XMLHttpRequest();
+                    var url1 = '/01-server?tx=' + $('#123').val();
+                    xhr.open('get', url1, true);
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState == 4 && xhr.status == 200) {
+                            $('#12').html(xhr.responseText);
+                        }
+                    };
+                    xhr.send(null)
+                }
+            }
+        )
+
+    })
+</script>
+</body>
+</html>

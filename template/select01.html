@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查看全部</title>
+</head>
+<body>
+    <button id="bt">点击显示全部</button>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>用户名</th>
+                <th>用户密码</th>
+                <th>ID</th>
+            </tr>
+        </thead>
+        <tbody id="show-body">
+
+        </tbody>
+    </table>
+    <script src="/static/js/cXHR.js"></script>
+    <script src="/static/js/jquery-1.11.3.js"></script>
+    <script>
+        $(function () {
+            $('#bt').click(function () {
+                var xhr = createXHR();
+                xhr.open('get','/select-sever01',true);
+                xhr.onreadystatechange=function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        var us = xhr.responseText;
+                        var usp = JSON.parse(us);
+                        console.log(us);
+                        $.each(usp, function (i, obj) {
+                            var htmlt = '<tr><th>' + obj.username + '</th><th>' +
+                                obj.password + '</th><th>' +
+                                obj.id + '</th></tr>';
+                            $('#show-body').html(htmlt)
+                        })
+                    }
+                };
+                xhr.send(null);
+            })
+        })
+    </script>
+</body>
+</html>

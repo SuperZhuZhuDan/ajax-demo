@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>验证用户名</title>
+</head>
+<body>
+    用户名<input type="text" id="uname"><div id="ts"></div>
+    <script src="/static/js/jquery-1.11.3.js"></script>
+    <script>
+        $(function () {
+            $('#uname').blur(function () {
+                if (window.XMLHttpRequest){
+                    var xhr =new XMLHttpRequest();
+                    xhr.open('post','/02-post',true);
+                    var tx = $('#uname').val();
+                    xhr.onreadystatechange=function(){
+                        if (xhr.readyState== 4 && xhr.status==200){
+                            $('#ts').html(xhr.responseText)
+                        }
+                    };
+                    xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                    var tx2 = 'uname='+tx;
+                    xhr.send(tx2);
+                }
+
+            })
+
+        })
+    </script>
+
+</body>
+</html>

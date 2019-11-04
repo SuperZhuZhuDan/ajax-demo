@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>省市搜索</title>
+    <script src="/static/js/cXHR.js"></script>
+    <script src="/static/js/jquery-1.11.3.js"></script>
+    <style type="text/css">
+        .hide{display: none}
+    </style>
+</head>
+<body>
+<select id = 'province'>
+</select>
+<select id = 'city' class="hide"></select>
+<script>
+    function prov() {
+            var xhr = createXHR();
+            xhr.open('get','/p-server01',false);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status == 200){
+                    var p = xhr.responseText;
+                    console.log(p);
+                    var pclass = JSON.parse(p);
+                    var op='<option value="0">--请选择--</option>';
+                    $.each(pclass,function (i,obj) {
+                        op += '<option value='+obj.id+'>';
+                        op += obj.p_name;
+                        op += '</option>';
+                        console.log(op);
+                    });
+                    $('#province').html(op);
+                }
+            };
+            xhr.send(null);
+        }
+    $(function () {
+        prov();
+        $('#province').change(function () {
+            if ($('#province').val()==0){
+                $('#city').addClass('hide')
+            }
+            else {
+                $('#city').removeClass();
+                var xhr = createXHR();
+                var p_id = '/c-server01?p_id='+$('#province').val();
+                console.log(p_id);
+                xhr.open('get',p_id,true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.status==200 && xhr.readyState==4){
+                        var cname = JSON.parse(xhr.responseText);
+                        var op = '';
+                        $.each(cname,function (i,obj) {
+                            op += '<option value='+obj.id+'>';
+                            op += obj.c_name;
+                            op += '</option>';
+                        });
+                        $('#city').html(op)
+                    }
+                };
+                xhr.send(null);
+            }
+        })
+    })
+</script>
+</body>
+</html>
